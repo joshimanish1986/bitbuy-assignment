@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.assignment.bitbuy.entity.User;
+import com.assignment.bitbuy.exception.UnauthorizedUserException;
 import com.assignment.bitbuy.repository.UserRepository;
+
+import lombok.Lombok;
+import lombok.SneakyThrows;
 
 @Service
 @Transactional
@@ -41,14 +45,20 @@ public class IUserService implements UserService {
 	}
 
 	@Override
-	public User getUser(Long id) throws Exception {
+	public User getUser(Long id, String userName) throws UnauthorizedUserException, Exception {
 
 		User dbUser = null;
-		try {
-			dbUser = userRepo.findById(id).get();
-			return dbUser;
-		} catch (NoSuchElementException e) {
-			throw new Exception("User not found for id " + id);
+		if (null != userRepo.findByUserName(userName)) {
+			try {
+				dbUser = userRepo.findById(id).get();
+				return dbUser;
+			} catch (NoSuchElementException e) {
+				throw new Exception("User not found for id " + id);
+			}
+
+		}
+		else {
+			throw new UnauthorizedUserException("Access Denied for user :: " + userName);
 		}
 
 	}
@@ -56,15 +66,27 @@ public class IUserService implements UserService {
 	@Override
 	public User updateUser(Long id, User user) throws Exception {
 		User dbUser = null;
-		
-			dbUser = userRepo.findById(id).map(u -> {
-				u.setName(u.getName());
-				u.setEmail(user.getEmail());
-				u.setPhone(user.getPhone());
-				return u;
-			}).orElseThrow(() -> new Exception("User not found for id " + id));
-		
-		//update the user and return.
+
+		dbUser = userRepo.findById(id).map(u -> {
+			try {
+				if(login(user)) { // using inbuilt login method for validation
+					u.setName(u.getName());
+					u.setEmail(user.getEmail());
+					u.setPhone(user.getPhone());
+					
+				}
+				
+				else {
+					throw new UnauthorizedUserException("Access Denied for user :: " + user.getUserName());
+				}
+			} catch (Exception e) {
+				Lombok.sneakyThrow(e); //Using lombock to throw the exception
+			}
+			return u;
+			
+		}).orElseThrow(() -> new Exception("User not found for id " + id));
+
+		// update the user and return.
 		return userRepo.save(dbUser);
 
 	}

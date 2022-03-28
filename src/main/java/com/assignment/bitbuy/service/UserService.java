@@ -1,7 +1,5 @@
 package com.assignment.bitbuy.service;
 
-import java.util.Map;
-
 import com.assignment.bitbuy.entity.User;
 
 public interface UserService {
@@ -10,7 +8,7 @@ public interface UserService {
 	
 	boolean login(User user) throws Exception ;
 	
-	User getUser(Long id) throws Exception ;
+	User getUser(Long id, String userName) throws Exception ;
 	
 	User updateUser(Long id, User user) throws Exception ;
 	

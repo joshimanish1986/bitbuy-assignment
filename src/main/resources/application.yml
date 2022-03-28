@@ -22,10 +22,6 @@ spring:
       name: bitbuy
       password: Crypto$123
 
-bitbuy:
-  assignment:
-     jwtCookieName: bitbuycookie
-     jwtSecret:  bitbuycookieSecretKey
 
       
 
