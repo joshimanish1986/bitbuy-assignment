@@ -73,8 +73,8 @@ class BitbuyApplicationTests {
 	public void testSecuredGetAndPost() throws Exception {
 
 		User testUserObj = new User();
-		testUserObj.setUserName("joshman");
-		testUserObj.setPassword("Pass_1234");
+		testUserObj.setUserName("testname");
+		testUserObj.setPassword("pass100");
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
