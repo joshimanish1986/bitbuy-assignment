@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+  security:
+    user:
+      name: bitbuy
+      password: Crypto$123
+
+bitbuy:
+  assignment:
+     jwtCookieName: bitbuycookie
+     jwtSecret:  bitbuycookieSecretKey
+
+      
+
