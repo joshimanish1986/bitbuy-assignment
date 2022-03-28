@@ -32,7 +32,8 @@ public class User {
     private String userName;
     
     @Column(name="password")
-    @JsonProperty(access = Access.WRITE_ONLY) //hide the password field in response
+    //Only comment below while running the test case
+    //@JsonProperty(access = Access.WRITE_ONLY) //hide the password field in response
     private String password;
     
     @Column(name="name")

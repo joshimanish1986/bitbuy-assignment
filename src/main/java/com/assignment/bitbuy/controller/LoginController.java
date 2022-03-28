@@ -58,16 +58,22 @@ public class LoginController {
 
 	}
 
+	/*
+	 * This endpoint is secured with Spring Basic Auth
+	 */
 	@GetMapping(path = "/api/users/{uuid}")
 	public ResponseEntity<User> getUser(@PathVariable("uuid") Long id, @RequestHeader String userName) {
 
 		User user = null;
 
 		try {
-			// userName is required to confirm access to the API
-			// this is just for Demo to show validation b4 accessing the resource
-			// can also be by calling the login API above
-			// or using JWT (cookies). Authentication Manager etc
+			
+			/* userName is required to confirm access to the API
+			/* this is just for Demo to show validation b4 accessing the resource
+			/* can also be by calling the login API above
+			/* or using JWT (cookies). Authentication Manager etc
+			 * 
+			 */
 			if (null != userName && !userName.isEmpty()) {
 				user = userService.getUser(id, userName);
 				return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -89,26 +95,30 @@ public class LoginController {
 
 	}
 
+	/*
+	 * This endpoint is secured with Spring Basic Auth
+	 */
 	@PostMapping(path = "/api/users/{uuid}", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<User> updateUser(@PathVariable("uuid") Long id, @RequestBody User user) {
+
+		/* Another approach :In this method updating the user by validating the
+		* credentials
+		* using the login API of this Rest Controller
+		* validation in Service Layer
+		 */
 		
-		// Another approach :In this method updating the user by validating the credentials
-		// using the login API of this Rest Controller
-		// validation in Service Layer
 		User updatedUser = null;
 		if (null != user) {
-			if (null!= user.getUserName()
-					&& null != user.getPassword()) {
+			if (null != user.getUserName() && null != user.getPassword()) {
 				try {
 					updatedUser = userService.updateUser(id, user);
 					return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
 
-				} 
-				
+				}
+
 				catch (UnauthorizedUserException e) {
 					return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
 				}
 
