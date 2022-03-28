@@ -1,7 +1,12 @@
 # bitbuy-assignment
+
+# Pre-requisite: JDK8+ and maven should be installed in machine
+
 Download the code
 
-Run mvn clean install in the folder with the pom.xml file
+Using commnd line, in the folder where the pom.xml file exists, run command :-  mvn clean install
+
+From target folder run command :-  java -jar bitbuy-0.0.1-SNAPSHOT.jar
 
 For positive test cases, please use the below API endpoints and sample request to test in the given order using Postman:-
 
@@ -29,6 +34,9 @@ In the Autharization -> Type Basic Auth, enter:-
 
 Username: bitbuy
 Password: Crypto$123
+
+Under Headers, provide this key value
+userName: testname
 
 Expected Response: Status 200 OK and the message user details in the Response Body
 
